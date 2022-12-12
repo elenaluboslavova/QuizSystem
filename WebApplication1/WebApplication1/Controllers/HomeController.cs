@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using QuizSystem.Services.Quizzes;
 using System.Diagnostics;
 using WebApplication1.Models;
 
@@ -7,21 +8,20 @@ namespace WebApplication1.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IQuizService quizzes;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IQuizService quizzes)
         {
             _logger = logger;
+            this.quizzes = quizzes;
         }
 
         public IActionResult Index()
         {
-            return View();
+            var latestQuizzes = this.quizzes.All();
+            return View(latestQuizzes);
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
